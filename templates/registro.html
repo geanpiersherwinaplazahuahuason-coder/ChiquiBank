@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - ChiquiBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 ChiquiBank</h1>
+            <p>¡Crea tu cuenta y recibe 100 ChiqDollars! 🎁</p>
+        </div>
+        
+        <div class="card">
+            {% if error %}
+            <div class="alert alert-error">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST">
+                <div class="form-group">
+                    <label for="nombre">👤 Nombre completo:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">📧 Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="usuario">🔑 Usuario (mínimo 4 caracteres):</label>
+                    <input type="text" id="usuario" name="usuario" required minlength="4">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">🔒 Contraseña (mínimo 6 caracteres):</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                
+                <button type="submit" class="btn btn-success">🚀 Crear Cuenta</button>
+            </form>
+            
+            <div class="links">
+                <a href="{{ url_for('login') }}">🔐 ¿Ya tienes cuenta? Inicia sesión</a>
+                <a href="{{ url_for('index') }}">🏠 Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
