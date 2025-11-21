@@ -3,6 +3,7 @@ import json
 import hashlib
 import random
 from datetime import datetime
+import os  # ¡IMPORTANTE para Render!
 
 app = Flask(__name__)
 app.secret_key = 'chiquibank_secret_key_2024'
@@ -280,9 +281,14 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
+# ⭐⭐ VERSIÓN PARA RENDER.COM ⭐⭐
 if __name__ == '__main__':
-    print("🏦 ChiquiBank iniciado!")
+    port = int(os.environ.get("PORT", 5000))
+    print("=" * 60)
+    print("🏦 ChiquiBank INICIADO!")
     print("💳 Moneda: ChiqDollars")
-    print("🌐 Servidor web en http://localhost:5000")
-    print("👤 Admin: usuario 'admin', contraseña 'admin123'")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    print(f"🌐 Servidor ejecutándose en puerto: {port}")
+    print("👤 Administrador: usuario 'admin', contraseña 'admin123'")
+    print("🎁 Cada usuario nuevo recibe 100 ChiqDollars de bono")
+    print("=" * 60)
+    app.run(host='0.0.0.0', port=port, debug=False)
