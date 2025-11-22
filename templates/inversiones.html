@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inversiones - ChiquiBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Mercado de Valores ChiquiBank</h1>
+            <p>Invierte en acciones y construye tu patrimonio</p>
+        </div>
+
+        <div class="card">
+            <h2>💼 Tu Portafolio</h2>
+            <div id="portafolio">
+                {% if portafolio %}
+                    {% for simbolo, cantidad in portafolio.items() %}
+                    <div class="accion-item">
+                        <strong>{{ simbolo }}</strong>: {{ cantidad }} acciones
+                        <span class="valor">Valor: {{ "%.2f"|format(cantidad * acciones[simbolo].precio) }} ChiqDollars</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No tienes acciones en tu portafolio</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Acciones Disponibles</h2>
+            <div class="acciones-grid">
+                {% for simbolo, datos in acciones.items() %}
+                <div class="accion-card">
+                    <h3>{{ simbolo }}</h3>
+                    <p class="precio">💰 {{ "%.2f"|format(datos.precio) }} ChiqDollars</p>
+                    <p>📊 Volatilidad: {{ (datos.volatilidad * 100)|int }}%</p>
+                    <p>🎁 Dividendo: {{ (datos.dividendo * 100)|int }}%</p>
+                    
+                    <div class="compra-form">
+                        <input type="number" id="cantidad-{{ simbolo }}" placeholder="Cantidad" min="1" value="10">
+                        <button onclick="comprarAcciones('{{ simbolo }}')">Comprar</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/usuario" class="btn btn-secondary">← Volver al Panel</a>
+        </div>
+    </div>
+
+    <script>
+    async function comprarAcciones(simbolo) {
+        const cantidad = document.getElementById(`cantidad-${simbolo}`).value;
+        
+        if (!cantidad || cantidad < 1) {
+            alert('Por favor ingresa una cantidad válida');
+            return;
+        }
+
+        try {
+            const response = await fetch('/comprar_acciones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    simbolo: simbolo,
+                    cantidad: parseInt(cantidad)
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                alert('✅ ' + data.mensaje + '\n💰 Nuevo saldo: ' + data.nuevo_saldo.toFixed(2));
+                location.reload();
+            }
+        } catch (error) {
+            alert('Error en la transacción: ' + error);
+        }
+    }
+    </script>
+
+    <style>
+    .acciones-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .accion-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #007bff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .accion-item {
+        background: #f8f9fa;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .compra-form {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+    
+    .compra-form input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    
+    .compra-form button {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .precio {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #28a745;
+    }
+    </style>
+</body>
+</html>

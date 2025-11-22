@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Usuario - ChiquiBank Realista</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👤 ChiquiBank - Panel del Cliente</h1>
+            <p>¡Hola, {{ nombre }}! Gestión financiera profesional</p>
+        </div>
+        
+        <div class="dashboard-cards">
+            <div class="card balance-card">
+                <h3>💰 Saldo Disponible</h3>
+                <p class="balance">{{ "%.2f"|format(saldo) }} ChiqDollars</p>
+                <small>Cuenta: {{ info_usuario.numero_cuenta }}</small>
+            </div>
+            
+            <div class="card portfolio-card">
+                <h3>📈 Valor del Portafolio</h3>
+                <p class="balance">{{ "%.2f"|format(valor_portafolio) }} ChiqDollars</p>
+                <small>Inversiones en bolsa</small>
+            </div>
+            
+            <div class="card debt-card">
+                <h3>🏠 Deuda Total</h3>
+                <p class="balance">{{ "%.2f"|format(deuda_total) }} ChiqDollars</p>
+                <small>Préstamos activos</small>
+            </div>
+            
+            <div class="card networth-card">
+                <h3>💎 Patrimonio Neto</h3>
+                <p class="balance">{{ "%.2f"|format(patrimonio) }} ChiqDollars</p>
+                <small>Saldo + Inversiones - Deudas</small>
+            </div>
+        </div>
+        
+        <div class="navigation-grid">
+            <a href="/inversiones" class="nav-card">
+                <h3>📊 Mercado de Valores</h3>
+                <p>Comprar y vender acciones</p>
+            </a>
+            
+            <a href="/apuestas_deportivas" class="nav-card">
+                <h3>🎯 Apuestas Deportivas</h3>
+                <p>Apuestas con cuotas reales</p>
+            </a>
+            
+            <a href="/prestamos" class="nav-card">
+                <h3>🏠 Solicitar Préstamo</h3>
+                <p>Análisis de capacidad de pago</p>
+            </a>
+            
+            <a href="/api/transacciones" class="nav-card">
+                <h3>📋 Historial</h3>
+                <p>Transacciones y movimientos</p>
+            </a>
+        </div>
+        
+        <div class="market-info">
+            <h3>📈 Mercado Hoy</h3>
+            <p>Los precios de las acciones fluctuan en tiempo real</p>
+            <p>💡 Estrategia: Comprar en baja, vender en alza</p>
+        </div>
+        
+        <div class="navigation">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <style>
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .balance-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+    .portfolio-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+    .debt-card { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+    .networth-card { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
+    
+    .navigation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .nav-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #333;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-card:hover {
+        transform: translateY(-5px);
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .market-info {
+        background: #fff3cd;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #ffc107;
+    }
+    </style>
+</body>
+</html>

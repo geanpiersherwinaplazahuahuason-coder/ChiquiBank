@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Préstamos - ChiquiBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Préstamos ChiquiBank</h1>
+            <p>Financiamiento con análisis de capacidad de pago</p>
+        </div>
+
+        <div class="card">
+            <h2>📋 Solicitar Préstamo</h2>
+            <form id="prestamoForm">
+                <div class="form-group">
+                    <label>Monto del préstamo:</label>
+                    <input type="number" id="monto" placeholder="Ej: 5000" min="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Plazo en meses:</label>
+                    <select id="plazo_meses" required>
+                        <option value="6">6 meses</option>
+                        <option value="12" selected>12 meses</option>
+                        <option value="24">24 meses</option>
+                        <option value="36">36 meses</option>
+                    </select>
+                </div>
+                
+                <button type="button" onclick="solicitarPrestamo()" class="btn btn-primary">
+                    📝 Solicitar Análisis de Crédito
+                </button>
+            </form>
+            
+            <div id="resultadoPrestamo" style="margin-top: 20px;"></div>
+        </div>
+
+        {% if prestamos %}
+        <div class="card">
+            <h2>📊 Tus Préstamos Activos</h2>
+            {% for prestamo in prestamos %}
+            <div class="prestamo-item">
+                <h4>Préstamo #{{ prestamo.id }}</h4>
+                <p>Monto original: {{ "%.2f"|format(prestamo.monto_original) }} ChiqDollars</p>
+                <p>Saldo pendiente: {{ "%.2f"|format(prestamo.monto_restante) }} ChiqDollars</p>
+                <p>Cuota mensual: {{ "%.2f"|format(prestamo.cuota_mensual) }} ChiqDollars</p>
+                <p>Tasa interés: {{ (prestamo.tasa_interes * 100)|int }}% anual</p>
+                <small>Otorgado: {{ prestamo.fecha_otorgamiento }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="card info-card">
+            <h3>💡 Información del Préstamo</h3>
+            <p><strong>Tasa de interés:</strong> {{ tasa_interes }}% anual</p>
+            <p><strong>Análisis de riesgo:</strong> Verificamos tu capacidad de pago</p>
+            <p><strong>Requisitos:</strong> Cuenta activa + Historial positivo</p>
+            <p><strong>💎 Consejo:</strong> Solo pide prestado lo que realmente necesites</p>
+        </div>
+
+        <div class="navigation">
+            <a href="/usuario" class="btn btn-secondary">← Volver al Panel</a>
+        </div>
+    </div>
+
+    <script>
+    async function solicitarPrestamo() {
+        const monto = document.getElementById('monto').value;
+        const plazo = document.getElementById('plazo_meses').value;
+        
+        if (!monto || monto < 100) {
+            alert('Monto mínimo: 100 ChiqDollars');
+            return;
+        }
+
+        try {
+            const response = await fetch('/solicitar_prestamo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    monto: parseFloat(monto),
+                    plazo_meses: parseInt(plazo)
+                })
+            });
+
+            const data = await response.json();
+            const resultadoDiv = document.getElementById('resultadoPrestamo');
+            
+            if (data.error) {
+                resultadoDiv.innerHTML = `<div style="color: red; padding: 10px; background: #ffe6e6; border-radius: 5px;">
+                    ❌ ${data.error}
+                </div>`;
+            } else {
+                resultadoDiv.innerHTML = `<div style="color: green; padding: 10px; background: #e6ffe6; border-radius: 5px;">
+                    ✅ ${data.mensaje}<br>
+                    💰 Nuevo saldo: ${data.nuevo_saldo.toFixed(2)} ChiqDollars<br>
+                    📅 Cuota mensual: ${data.prestamo.cuota_mensual.toFixed(2)} ChiqDollars
+                </div>`;
+                setTimeout(() => location.reload(), 3000);
+            }
+        } catch (error) {
+            alert('Error en la solicitud: ' + error);
+        }
+    }
+    </script>
+
+    <style>
+    .prestamo-item {
+        background: #f8f9fa;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border-left: 4px solid #007bff;
+    }
+    
+    .info-card {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    </style>
+</body>
+</html>

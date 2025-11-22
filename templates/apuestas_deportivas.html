@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apuestas Deportivas - ChiquiBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Apuestas Deportivas ChiquiBank</h1>
+            <p>Apuestas con cuotas reales - Juega responsablemente</p>
+        </div>
+
+        <div class="card">
+            <h2>⚽ Eventos Disponibles</h2>
+            <div class="eventos-grid">
+                {% for evento in eventos %}
+                <div class="evento-card">
+                    <h3>{{ evento.evento }}</h3>
+                    
+                    <div class="cuotas">
+                        <div class="cuota-option">
+                            <span>Local</span>
+                            <strong>{{ evento.cuota_local }}x</strong>
+                            <button onclick="apostar({{ evento.id }}, 'local')">Apostar</button>
+                        </div>
+                        
+                        <div class="cuota-option">
+                            <span>Empate</span>
+                            <strong>{{ evento.cuota_empate }}x</strong>
+                            <button onclick="apostar({{ evento.id }}, 'empate')">Apostar</button>
+                        </div>
+                        
+                        <div class="cuota-option">
+                            <span>Visitante</span>
+                            <strong>{{ evento.cuota_visitante }}x</strong>
+                            <button onclick="apostar({{ evento.id }}, 'visitante')">Apostar</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card info-card">
+            <h3>📊 Análisis de Probabilidades</h3>
+            <p>Las cuotas reflejan las probabilidades estimadas de cada resultado:</p>
+            <ul>
+                <li>Cuota baja = Mayor probabilidad</li>
+                <li>Cuota alta = Menor probabilidad</li>
+                <li>¡Las sorpresas existen en el deporte!</li>
+            </ul>
+            <p><strong>💡 Consejo:</strong> No apuestes más del 10% de tu capital</p>
+        </div>
+
+        <div class="navigation">
+            <a href="/usuario" class="btn btn-secondary">← Volver al Panel</a>
+        </div>
+    </div>
+
+    <script>
+    async function apostar(eventoId, resultado) {
+        const monto = prompt('¿Cuánto quieres apostar?');
+        
+        if (!monto || monto < 10) {
+            alert('Monto mínimo: 10 ChiqDollars');
+            return;
+        }
+
+        try {
+            const response = await fetch('/apostar_deportes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    evento_id: eventoId,
+                    monto: parseFloat(monto),
+                    resultado: resultado
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                alert(data.mensaje + '\n💰 Nuevo saldo: ' + data.nuevo_saldo.toFixed(2));
+            }
+        } catch (error) {
+            alert('Error en la apuesta: ' + error);
+        }
+    }
+    </script>
+
+    <style>
+    .eventos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .evento-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+    }
+    
+    .cuotas {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .cuota-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    .cuota-option button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+    .info-card {
+        background: #e7f3ff;
+        border-left: 4px solid #007bff;
+    }
+    </style>
+</body>
+</html>

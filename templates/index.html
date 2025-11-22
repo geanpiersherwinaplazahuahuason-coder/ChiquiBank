@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChiquiBank - Tu Banco Divertido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <h1>🏦 ChiquiBank</h1>
+                <div class="slogan">¡El banco más divertido!</div>
+            </div>
+            <p>Donde tus ChiqDollars 💰 crecen con alegría</p>
+        </div>
+        
+        <div class="card welcome-card">
+            <h2>¡Bienvenido a ChiquiBank! 🎉</h2>
+            <p>Gestiona tus <strong>ChiqDollars</strong> de manera segura y divertida</p>
+            
+            <div class="bonus-info">
+                <div class="bonus-badge">🎁 ¡Bono de bienvenida! 100 ChiqDollars</div>
+            </div>
+            
+            <div class="button-group">
+                <a href="{{ url_for('login') }}" class="btn btn-primary">🔐 Iniciar Sesión</a>
+                <a href="{{ url_for('registro') }}" class="btn btn-success">📝 Crear Cuenta</a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🛡️ Super Seguro</h3>
+                <p>Tus ChiqDollars están protegidos</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ Super Rápido</h3>
+                <p>Transacciones en chiquitiempo</p>
+            </div>
+            <div class="feature">
+                <h3>😄 Divertido</h3>
+                <p>La mejor experiencia bancaria</p>
+            </div>
+            <div class="feature">
+                <h3>🎁 Recompensas</h3>
+                <p>Gana ChiqDollars extra</p>
+            </div>
+        </div>
+        
+        <div class="currency-info">
+            <div class="card">
+                <h3>💳 Acerca de los ChiqDollars</h3>
+                <p>Los <strong>ChiqDollars</strong> son la moneda oficial de ChiquiBank. 
+                   ¡Son divertidos, seguros y siempre están de fiesta! 🎊</p>
+                <div class="exchange-rate">
+                    <strong>💱 Tasa de cambio:</strong> 1 ChiqDollar = 1 Sonrisa 😊
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
