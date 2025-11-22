@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,51 +43,4 @@
         </div>
     </div>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - ChiquiBank</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🔐 ChiquiBank</h1>
-            <p>¡Ingresa a tu cuenta!</p>
-        </div>
-        
-        <div class="card">
-            {% if error %}
-            <div class="alert alert-error">{{ error }}</div>
-            {% endif %}
-            
-            <form method="POST">
-                <div class="form-group">
-                    <label for="usuario">👤 Usuario:</label>
-                    <input type="text" id="usuario" name="usuario" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">🔒 Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">🎯 Ingresar</button>
-            </form>
-            
-            <div class="links">
-                <a href="{{ url_for('registro') }}">📝 ¿No tienes cuenta? Regístrate aquí</a>
-                <a href="{{ url_for('index') }}">🏠 Volver al inicio</a>
-            </div>
-            
-            <div class="admin-info">
-                <small>💡 ¿Eres el administrador? Usa: usuario "admin", contraseña "admin123"</small>
-            </div>
-        </div>
-    </div>
-</body>
->>>>>>> 786f7cfa634b086375398e264e068be2ee7a0b45
 </html>
