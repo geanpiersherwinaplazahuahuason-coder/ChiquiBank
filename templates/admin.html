@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -107,4 +108,115 @@
         cargarSolicitudes();
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - ChiquiBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👑 ChiquiBank - Panel del Administrador</h1>
+            <p>Hola, {{ nombre }} - Gestión del sistema</p>
+        </div>
+        
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>👥 Total Usuarios</h3>
+                <p class="stat-number">{{ total_usuarios }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>📋 Solicitudes Pendientes</h3>
+                <p class="stat-number">{{ total_solicitudes }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>🏦 Saldo del Banco</h3>
+                <p class="stat-number">{{ "%.2f"|format(saldo_banco) }} 💰</p>
+            </div>
+        </div>
+        
+        <div class="admin-actions">
+            <div class="card">
+                <h3>📊 Solicitudes Pendientes</h3>
+                <div id="solicitudesList" class="solicitudes-list"></div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button onclick="cargarSolicitudes()" class="btn btn-secondary">🔄 Actualizar</button>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <script>
+        function cargarSolicitudes() {
+            fetch('/api/solicitudes')
+                .then(response => response.json())
+                .then(data => {
+                    const solicitudesDiv = document.getElementById('solicitudesList');
+                    if (data.solicitudes.length === 0) {
+                        solicitudesDiv.innerHTML = '<p>✅ No hay solicitudes pendientes</p>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.solicitudes.forEach(sol => {
+                        html += `
+                            <div class="solicitud-item">
+                                <div class="solicitud-header">
+                                    <strong>📄 Solicitud #${sol.id}</strong>
+                                    <span class="solicitud-fecha">${new Date(sol.fecha).toLocaleString()}</span>
+                                </div>
+                                <div class="solicitud-details">
+                                    <p><strong>👤 Usuario:</strong> ${sol.usuario}</p>
+                                    <p><strong>💸 Tipo:</strong> ${sol.tipo.toUpperCase()}</p>
+                                    <p><strong>💰 Monto:</strong> ${sol.monto} ChiqDollars</p>
+                                    ${sol.descripcion ? `<p><strong>📝 Descripción:</strong> ${sol.descripcion}</p>` : ''}
+                                </div>
+                                <div class="solicitud-actions">
+                                    <button onclick="procesarSolicitud(${sol.id}, 'aprobar')" class="btn btn-success">✅ Aprobar</button>
+                                    <button onclick="procesarSolicitud(${sol.id}, 'rechazar')" class="btn btn-danger">❌ Rechazar</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    solicitudesDiv.innerHTML = html;
+                });
+        }
+        
+        function procesarSolicitud(solicitudId, accion) {
+            if (!confirm(`¿Estás seguro de que quieres ${accion} esta solicitud?`)) {
+                return;
+            }
+            
+            fetch('/api/procesar_solicitud', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    solicitud_id: solicitudId,
+                    accion: accion
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('❌ Error: ' + data.error);
+                } else {
+                    alert('✅ ' + data.mensaje);
+                    cargarSolicitudes();
+                }
+            });
+        }
+        
+        cargarSolicitudes();
+    </script>
+</body>
+>>>>>>> 786f7cfa634b086375398e264e068be2ee7a0b45
 </html>

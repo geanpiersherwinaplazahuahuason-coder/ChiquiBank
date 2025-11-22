@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 services:
   - type: web
     name: chiquibank
@@ -7,4 +8,15 @@ services:
     startCommand: "python app.py"
     envVars:
       - key: PYTHON_VERSION
+=======
+services:
+  - type: web
+    name: chiquibank
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    envVars:
+      - key: PYTHON_VERSION
+>>>>>>> 786f7cfa634b086375398e264e068be2ee7a0b45
         value: 3.11.0
