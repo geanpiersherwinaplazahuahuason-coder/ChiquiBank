@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,52 +44,4 @@
         </div>
     </div>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Registro Exitoso! - ChiquiBank</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🎉 ¡Felicidades!</h1>
-            <p>¡Bienvenido a ChiquiBank!</p>
-        </div>
-        
-        <div class="card success-card">
-            <div class="success-icon">✅</div>
-            <h2>¡Cuenta creada exitosamente!</h2>
-            
-            <div class="user-details">
-                <div class="detail-item">
-                    <strong>👤 Nombre:</strong> {{ nombre }}
-                </div>
-                <div class="detail-item">
-                    <strong>🔑 Usuario:</strong> {{ usuario }}
-                </div>
-                <div class="detail-item">
-                    <strong>💳 Número de cuenta:</strong> {{ numero_cuenta }}
-                </div>
-                <div class="detail-item">
-                    <strong>💰 Saldo inicial:</strong> {{ saldo_inicial }} ChiqDollars 🎁
-                </div>
-            </div>
-            
-            <div class="success-message">
-                <p>¡Ya puedes empezar a usar tu cuenta de ChiquiBank!</p>
-                <p>Recuerda: Tu saldo está en <strong>ChiqDollars</strong>, nuestra moneda divertida 💰</p>
-            </div>
-            
-            <div class="button-group">
-                <a href="{{ url_for('login') }}" class="btn btn-primary">🔐 Iniciar Sesión</a>
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">🏠 Volver al Inicio</a>
-            </div>
-        </div>
-    </div>
-</body>
->>>>>>> 786f7cfa634b086375398e264e068be2ee7a0b45
 </html>
